@@ -1,0 +1,47 @@
+:host {
+  display: block;
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  nb-tab {
+    padding: 1rem 0;
+    overflow: hidden;
+  }
+  nb-card {
+    position: relative;
+  }
+}
+
+:host ::ng-deep nb-tabset .tabset {
+  justify-content: flex-end;
+}
+
+.card-row {
+  display: flex;
+  margin: 0 -0.5rem;
+}
+
+.card-col {
+  flex: 1 0 calc(33% - 1rem);
+  margin: 0 0.5rem;
+}
+
+.card-header {
+  background-color: rgb(212, 212, 212);
+  text-align: center;
+}
+
+.test {
+  margin-left: auto;
+}
+
+.txtthongke {
+  position: absolute;
+  margin-top: 2rem;
+  margin-left: 1.5rem;
+  font-size: larger;
+  font-weight: bold;
+}
+.e-headertext {
+  font-weight: bolder;
+}

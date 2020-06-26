@@ -1,0 +1,178 @@
+<div class="hsx">
+  <nb-card size="big">
+    <span class="txtthongke">Thống kê</span>
+    <nb-card-body>
+      <nb-tabset class="tab">
+        <nb-tab tabTitle="HSX" class="test">
+          <div class="card-row">
+            <div class="card-col">
+              <nb-card size="small">
+                <nb-card-header class="card-header">PHÂN BỐ DÒNG TIỀN
+                </nb-card-header>
+                <nb-card-body>
+                  <div><canvas id="mybarChart" #mybarChart width="20" height="7"></canvas></div>
+                </nb-card-body>
+              </nb-card>
+              <nb-card size="small">
+                <nb-card-header class="card-header">TỐC ĐỘ GIAO DỊCH
+                  (KHỐI
+                  LƯỢNG/PHÚT)</nb-card-header>
+                <nb-card-body>
+                  <div><canvas #myChart id="myChart" width="20" height="7"></canvas></div>
+                </nb-card-body>
+              </nb-card>
+
+            </div>
+            <div class="card-col">
+              <nb-card size="giant">
+                <nb-card-header>TOP CỔ PHIẾU</nb-card-header>
+                <nb-card-body>
+                  <div class="control-section">
+                    <div id="sparkline" class="row">
+                      <div class="cols-sample-area">
+                        <ejs-grid #sparkgrid1 id="gridspark" [dataSource]='griddata' height=600 [allowSelection]=false
+                          [enableHover]=true>
+                          <e-columns>
+                            <e-column field='CustomerID' headerText='MÃ CK' width='80'></e-column>
+                            <e-column headerText='1d 10d 1m' textAlign='Center' width='100'>
+                              <ng-template #template let-griddata>
+                                <div id="spkline{{griddata.EmployeeID}}"></div>
+                              </ng-template>
+                            </e-column>
+                            <e-column field='Gia' headerText='GIÁ' width='80' textAlign='Center'></e-column>
+                            <e-column field='Thaydoi' headerText='THAY ĐỔI' width='100' textAlign='Center'></e-column>
+                            <e-column field='Phantram' headerText='%' width='80' textAlign='Center'></e-column>
+                            <e-column field='Khoiluong' headerText='KHỐI LƯỢNG' width='120' textAlign='Center'>
+                            </e-column>
+                          </e-columns>
+                        </ejs-grid>
+                      </div>
+                    </div>
+                  </div>
+
+                </nb-card-body>
+              </nb-card>
+            </div>
+          </div>
+        </nb-tab>
+
+        <nb-tab tabTitle="HNX"><a href="../hnx/hnx.component.html"></a>
+
+          <div class="card-row">
+            <div class="card-col">
+              <nb-card size="small">
+                <nb-card-header class="card-header">PHÂN BỐ DÒNG TIỀN
+                </nb-card-header>
+                <nb-card-body>
+                  <div><canvas id="mybarChart" #mybarChart width="20" height="11"></canvas></div>
+                </nb-card-body>
+              </nb-card>
+              <nb-card size="small">
+                <nb-card-header class="card-header">TỐC ĐỘ GIAO DỊCH
+                  (KHỐI
+                  LƯỢNG/PHÚT)</nb-card-header>
+                <nb-card-body>
+                  <div><canvas #myChart1 id="myChart1" width="20" height="7"></canvas></div>
+                </nb-card-body>
+              </nb-card>
+            </div>
+            <div class="card-col">
+              <nb-card size="giant">
+                <nb-card-header>TOP CỔ PHIẾU</nb-card-header>
+                <nb-card-body>
+                  <!-- <div class="tradingview-widget-container" #container1>
+                    <div class="tradingview-widget-container__widget"></div>
+                    <div class="tradingview-widget-copyright">
+                    </div>
+                  </div> -->
+                  <div class="control-section">
+                    <div id="sparkline" class="row">
+                      <div class="cols-sample-area">
+                        <ejs-grid #sparkgrid id="gridspark" [dataSource]='griddata' height=600 [allowSelection]=false
+                          [enableHover]=true>
+                          <e-columns>
+                            <e-column field='CustomerID' headerText='MÃ CK' width='80'></e-column>
+                            <e-column headerText='1d 10d 1m' textAlign='Center' width='100'>
+                              <ng-template #template let-griddata>
+                                <div id="spkline{{griddata.EmployeeID}}"></div>
+                              </ng-template>
+                            </e-column>
+                            <e-column field='Gia' headerText='GIÁ' width='80' textAlign='Center'></e-column>
+                            <e-column field='Thaydoi' headerText='THAY ĐỔI' width='100' textAlign='Center'></e-column>
+                            <e-column field='Phantram' headerText='%' width='80' textAlign='Center'></e-column>
+                            <e-column field='Khoiluong' headerText='KHỐI LƯỢNG' width='120' textAlign='Center'>
+                            </e-column>
+                          </e-columns>
+                        </ejs-grid>
+                      </div>
+                    </div>
+                  </div>
+
+                </nb-card-body>
+              </nb-card>
+            </div>
+          </div>
+
+        </nb-tab>
+        <nb-tab tabTitle="UPCOM"><a href="../upcom/upcom.component.html"></a>
+
+          <div class="card-row">
+            <div class="card-col">
+              <nb-card size="small">
+                <nb-card-header class="card-header">PHÂN BỐ DÒNG TIỀN
+                </nb-card-header>
+                <nb-card-body>
+                  <div><canvas id="mybarChart2" #mybarChart2 width="20" height="11"></canvas></div>
+                </nb-card-body>
+              </nb-card>
+              <nb-card size="small">
+                <nb-card-header class="card-header">TỐC ĐỘ GIAO DỊCH
+                  (KHỐI
+                  LƯỢNG/PHÚT)</nb-card-header>
+                <nb-card-body>
+                  <div><canvas #myChart2 id="myChart2" width="20" height="7"></canvas></div>
+                </nb-card-body>
+              </nb-card>
+            </div>
+            <div class="card-col">
+              <nb-card size="giant">
+                <nb-card-header>TOP CỔ PHIẾU</nb-card-header>
+                <nb-card-body>
+                  <!-- <div class="tradingview-widget-container" #container2>
+                    <div class="tradingview-widget-container__widget"></div>
+                    <div class="tradingview-widget-copyright">
+                    </div>
+                  </div> -->
+                  <div class="control-section">
+                    <div id="sparkline" class="row">
+                      <div class="cols-sample-area">
+                        <ejs-grid #sparkgrid id="gridspark" [dataSource]='griddata' height=600 [allowSelection]=false
+                          [enableHover]=true>
+                          <e-columns>
+                            <e-column field='CustomerID' headerText='MÃ CK' width='80'></e-column>
+                            <e-column headerText='1d 10d 1m' textAlign='Center' width='100'>
+                              <ng-template #template let-griddata>
+                                <div id="spkline{{griddata.EmployeeID}}"></div>
+                              </ng-template>
+                            </e-column>
+                            <e-column field='Gia' headerText='GIÁ' width='80' textAlign='Center'></e-column>
+                            <e-column field='Thaydoi' headerText='THAY ĐỔI' width='100' textAlign='Center'></e-column>
+                            <e-column field='Phantram' headerText='%' width='80' textAlign='Center'></e-column>
+                            <e-column field='Khoiluong' headerText='KHỐI LƯỢNG' width='120' textAlign='Center'>
+                            </e-column>
+                          </e-columns>
+                        </ejs-grid>
+                      </div>
+                    </div>
+                  </div>
+
+                </nb-card-body>
+              </nb-card>
+            </div>
+          </div>
+
+        </nb-tab>
+      </nb-tabset>
+    </nb-card-body>
+  </nb-card>
+</div>

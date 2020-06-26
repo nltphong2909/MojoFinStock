@@ -1,0 +1,82 @@
+// @import "ag-grid-community/dist/styles/ag-grid.css";
+// @import "ag-grid-community/dist/styles/ag-theme-alpine.css";
+:host {
+  display: block;
+  // height: auto;
+  // overflow-x: hidden;
+  // overflow-y: auto;
+}
+
+::ng-deep ag-grid-angular .ag-body-horizontal-scroll {
+  display: none;
+}
+
+.card-row {
+  display: flex;
+  margin: 0 -0.5rem;
+}
+
+.card-col {
+  flex: 1 0 calc(33% - 1rem);
+  margin: 0 0.5rem;
+}
+
+table {
+  width: 100%;
+}
+.news {
+  background-color: lightgray;
+  padding: 0.1rem;
+}
+.news1 {
+  margin-top: 0.1rem;
+  padding: 0.5rem;
+  background-color: white;
+}
+
+.content {
+  font-size: medium;
+  font-weight: bolder;
+  padding-left: 1rem;
+}
+
+.img {
+  width: 7rem;
+  height: 5rem;
+  float: left;
+  margin-right: 0.5rem;
+}
+.tt1 {
+  margin-top: 5rem;
+  font-size: large;
+  font-weight: bold;
+  text-decoration: none;
+  color: black;
+}
+// .news2 {
+//   width: auto;
+//   height: 7rem;
+//   background-color: red;
+//   margin: 0.5rem;
+// }
+// .news3 {
+//   width: auto;
+//   height: 7rem;
+//   background-color: red;
+//   margin: 0.5rem;
+// }
+// .news4 {
+//   width: auto;
+//   height: 7rem;
+//   background-color: red;
+//   margin: 0.5rem;
+// }
+// .news5 {
+//   width: auto;
+//   height: 7rem;
+//   background-color: red;
+//   margin: 0.5rem;
+// }
+p {
+  font-family: Lato;
+}
