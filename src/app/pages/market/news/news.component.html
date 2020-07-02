@@ -1,90 +1,51 @@
 <div class="card-row">
-
     <div class="card-col">
         <nb-card size="giant">
             <nb-card-header>BIẾN ĐỘNG NGÀNH</nb-card-header>
             <nb-card-body>
-                <ag-grid-angular style="height: 708px;" class="ag-theme-material" [rowData]="rowData"
+                <!-- <ag-grid-angular style="height: 708px;" class="ag-theme-material" [rowData]="rowData"
                     [columnDefs]="columnDefs" suppressHorizontalScroll="false">
-                </ag-grid-angular>
-
+                </ag-grid-angular> -->
+                <table id="table-sparkline">
+                    <thead>
+                        <tr>
+                            <th>NGÀNH</th>
+                            <th>TỶ TRỌNG (%)</th>
+                            <th>BIẾN ĐỘNG</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbody-sparkline">
+                        <tr>
+                            <td>Dầu khí</td>
+                            <td>5.43</td>
+                            <td id="container"></td>
+                        </tr>
+                    </tbody>
+                </table>
             </nb-card-body>
         </nb-card>
     </div>
 
     <div class="card-col">
-        <nb-card size="giant">
+        <nb-card class="own-scroll" size="giant">
             <nb-card-header>TIN TỨC</nb-card-header>
-            <nb-card-body>
-                <div class="news">
-                    <div class="news1">
-                        <img class="img"
-                            src="https://image.tinnhanhchungkhoan.vn/w860/Uploaded/2020/bpikpjik/2020_06_25/vni_hehb.jpg">
-
-                        <a class="tt1"
-                            href="https://tinnhanhchungkhoan.vn/chung-khoan/giao-dich-chung-khoan-sang-256-co-phieu-nho-tro-lai-vnindex-van-chim-trong-sac-do-332900.html">Giao
-                            dịch chứng khoán sáng 25/6: Cổ phiếu nhỏ trở lại, VN-Index vẫn chìm trong
-                            sắc đỏ</a><br />
-                        <span>(ĐTCK) Áp lực bán trên diện rộng ở nhiều nhóm ngành, trong khi thông tin hỗ trợ dường như
-                            mất hút khiến thị trường chìm trong sắc đỏ, VN-Index đe dọa xuyên thủng mốc 850 điểm.</span>
+            <nb-list nbInfiniteList [threshold]="500" (bottomThreshold)="loadData()">
+                <nb-list-item *ngFor="let new of news">
+                    <div class="news">
+                        <img class="img" [src]="new.media" />
+                        <div class="newsDate">{{new.date}}</div>
+                        <a class="title" [href]="new.link" target="blank">{{new.title}}</a>
+                        <div class="sapo">{{new.sapo}}</div>
                     </div>
-
-
-                    <div class="news1">
-                        <img class="img"
-                            src="https://image.tinnhanhchungkhoan.vn/w860/Uploaded/2020/nau-cubgbfubc/2017/nhan-dinh/2/137_kzve.jpg">
-
-                        <a class="tt1"
-                            href="https://tinnhanhchungkhoan.vn/nhan-dinh/goc-nhin-ky-thuat-phien-giao-dich-chung-khoan-ngay-256-thi-truong-se-co-xu-huong-giam-diem-332851.html">Góc
-                            nhìn kỹ thuật phiên giao dịch chứng khoán ngày 25/6: Thị trường sẽ có xu hướng giảm
-                            điểm</a><br />
-                        <span>(ĐTCK) Giá và khối lượng giảm cũng là một điểm tích cực với thị trường nếu chúng ta đặt
-                            trong chuỗi tổ hợp giao dịch trong hơn 10 ngày gần đây. Ít nhất, sự tháo chạy chưa diễn ra
-                            trong phiên hôm nay dù diễn biến dường như khá tiêu cực.</span>
+                </nb-list-item>
+                <nb-list-item>
+                    <div class="news loading">
+                        <div class="img loading"></div>
+                        <div class="title loading"></div>
+                        <div class="sapo loading"></div>
                     </div>
-
-                    <div class="news1">
-                        <img class="img"
-                            src="https://image.tinnhanhchungkhoan.vn/w860/Uploaded/2020/nau-cubgbfubc/2017/nhan-dinh/10/225_xtnj.jpg">
-
-                        <a class="tt1"
-                            href="https://tinnhanhchungkhoan.vn/nhan-dinh/nhan-dinh-thi-truong-phien-giao-dich-chung-khoan-ngay-246-than-trong-cho-phien-but-pha-332669.html">Nhận
-                            định thị trường phiên giao dịch chứng khoán ngày 24/6: Thận trọng chờ phiên bứt
-                            phá</a><br />
-                        <span>(ĐTCK) Trạng thái kĩ thuật vẫn duy trì ở mức trung tính, nhưng cơ hội mở rộng thêm của
-                            nhịp hồi phục vẫn còn để ngỏ với vùng kháng cự kế tiếp tại 880-885 điểm.</span>
-                    </div>
-
-                    <div class="news1">
-                        <img class="img"
-                            src="https://image.tinnhanhchungkhoan.vn/w860/Uploaded/2020/ipuokbf/anh%20afp/4/000_1nh8v2_emhn.jpg">
-
-                        <a class="tt1"
-                            href="https://tinnhanhchungkhoan.vn/quoc-te/phuc-hoi-chu-v-cho-chung-khoan-la-ao-tuong-332888.html">Phục
-                            hồi chữ V cho chứng khoán là... ảo tưởng</a><br />
-                        <span>(ĐTCK) Các cổ phiếu có thể phải đối mặt với sự hỗn loạn một lần nữa và lợi nhuận của doanh
-                            nghiệp hạn chế trong nửa cuối năm nay, khi đại dịch Covid-19 tiếp tục điều chỉnh hướng đi
-                            của thị trường và nền kinh tế.</span>
-                    </div>
-
-                    <div class="news1">
-                        <img class="img"
-                            src="https://image.tinnhanhchungkhoan.vn/w860/Uploaded/2020/lcgjikao/2020_06_24/chung-khoan-chau-a_cifi.jpg">
-
-                        <a class="tt1"
-                            href="https://tinnhanhchungkhoan.vn/quoc-te/credit-suisse-chung-khoan-chau-a-se-vuot-troi-trong-nua-cuoi-nam-332740.html">Credit
-                            Suisse: Chứng khoán châu Á sẽ vượt trội trong nửa cuối năm</a><br />
-                        <span>(ĐTCK) Chứng khoán châu Á ngoại trừ Nhật Bản sẽ vượt trội hơn so với các thị trường mới
-                            nổi khác trong nửa cuối năm 2020 khi được hỗ trợ bởi chính sách tiền tệ, sự suy yếu của đồng
-                            USD và dữ liệu kinh tế cải thiện.</span>
-                    </div>
-                </div>
-
-                <!-- <div class="news3"></div>
-                    <div class="news4"></div>
-                    <div class="news5"></div> -->
-
-            </nb-card-body>
+                </nb-list-item>
+            </nb-list>
         </nb-card>
     </div>
 </div>

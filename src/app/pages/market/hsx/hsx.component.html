@@ -30,13 +30,13 @@
                   <div class="control-section">
                     <div id="sparkline" class="row">
                       <div class="cols-sample-area">
-                        <ejs-grid #sparkgrid1 id="gridspark" [dataSource]='griddata' height=600 [allowSelection]=false
+                        <ejs-grid #sparkgrid id="gridspark" [dataSource]='griddata' height=600 [allowSelection]=false
                           [enableHover]=true>
                           <e-columns>
                             <e-column field='CustomerID' headerText='MÃ CK' width='80'></e-column>
-                            <e-column headerText='1d 10d 1m' textAlign='Center' width='100'>
+                            <e-column field='Time' headerText='1d 10d 1m' textAlign='Center' width='100'>
                               <ng-template #template let-griddata>
-                                <div id="spkline{{griddata.EmployeeID}}"></div>
+                                <div id="spkline_{{griddata.EmployeeID}}"></div>
                               </ng-template>
                             </e-column>
                             <e-column field='Gia' headerText='GIÁ' width='80' textAlign='Center'></e-column>
@@ -64,7 +64,7 @@
                 <nb-card-header class="card-header">PHÂN BỐ DÒNG TIỀN
                 </nb-card-header>
                 <nb-card-body>
-                  <div><canvas id="mybarChart" #mybarChart width="20" height="11"></canvas></div>
+                  <div><canvas id="mybarChart1" #mybarChart1 width="20" height="7"></canvas></div>
                 </nb-card-body>
               </nb-card>
               <nb-card size="small">
@@ -94,7 +94,7 @@
                             <e-column field='CustomerID' headerText='MÃ CK' width='80'></e-column>
                             <e-column headerText='1d 10d 1m' textAlign='Center' width='100'>
                               <ng-template #template let-griddata>
-                                <div id="spkline{{griddata.EmployeeID}}"></div>
+                                <div id="spkline2_{{griddata.EmployeeID}}"></div>
                               </ng-template>
                             </e-column>
                             <e-column field='Gia' headerText='GIÁ' width='80' textAlign='Center'></e-column>
@@ -122,7 +122,7 @@
                 <nb-card-header class="card-header">PHÂN BỐ DÒNG TIỀN
                 </nb-card-header>
                 <nb-card-body>
-                  <div><canvas id="mybarChart2" #mybarChart2 width="20" height="11"></canvas></div>
+                  <div><canvas id="mybarChart2" #mybarChart2 width="20" height="7"></canvas></div>
                 </nb-card-body>
               </nb-card>
               <nb-card size="small">
@@ -152,7 +152,7 @@
                             <e-column field='CustomerID' headerText='MÃ CK' width='80'></e-column>
                             <e-column headerText='1d 10d 1m' textAlign='Center' width='100'>
                               <ng-template #template let-griddata>
-                                <div id="spkline{{griddata.EmployeeID}}"></div>
+                                <div id="spkline3_{{griddata.EmployeeID}}"></div>
                               </ng-template>
                             </e-column>
                             <e-column field='Gia' headerText='GIÁ' width='80' textAlign='Center'></e-column>

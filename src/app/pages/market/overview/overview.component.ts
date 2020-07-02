@@ -9,8 +9,11 @@ import {
 import { Chart, Point } from "chart.js";
 import * as moment from "moment";
 import { timeout } from "rxjs/operators";
+import { ParseService } from "../../../parse.service";
+import { data } from "./data";
 
 declare const TradingView: any;
+declare const Highcharts: any;
 
 /**
  * Sample for default stockchart
@@ -23,70 +26,19 @@ declare const TradingView: any;
 })
 export class OverviewComponent implements AfterViewInit {
   chartData: Array<Point> = [];
-  // chart: any;
+  chart: any;
   // chart2: any;
   // chart3: any;
   tradingView: any;
+  mI = [];
 
   @ViewChild("container1", { static: false }) containerDiv1: ElementRef;
   @ViewChild("container2", { static: false }) containerDiv2: ElementRef;
   @ViewChild("container3", { static: false }) containerDiv3: ElementRef;
-  ngAfterViewInit() {
-    // this.chartData = [];
-    // var options = {
-    //   type: "line",
-    //   data: {
-    //     datasets: [
-    //       {
-    //         label: "Data",
-    //         borderColor: "green",
-    //         data: [
-    //           {
-    //             x: moment(),
-    //             y: 501
-    //           },
-    //           {
-    //             x: moment()
-    //               .clone()
-    //               .add(1, "minute"),
-    //             y: 500
-    //           },
-    //           {
-    //             x: moment()
-    //               .clone()
-    //               .add(2, "minute"),
-    //             y: 503
-    //           },
-    //           {
-    //             x: moment()
-    //               .clone()
-    //               .add(3, "minute"),
-    //             y: 499
-    //           }
-    //         ],
-    //         fill: false,
-    //         radius: 0
-    //       }
-    //     ]
-    //   },
-    //   options: {
-    //     scales: {
-    //       xAxes: [
-    //         {
-    //           type: "time",
-    //           time: {
-    //             displayFormats: {
-    //               hour: "hA"
-    //             }
-    //           }
-    //         }
-    //       ]
-    //     }
-    //   }
-    // };
-    // this.chart = this.drawChart(this.myChart.nativeElement, options);
-    // this.chart2 = this.drawChart(this.myChart2.nativeElement, options);
-    // this.chart3 = this.drawChart(this.myChart3.nativeElement, options);
+
+  @ViewChild("myChart", { static: false }) myChart: ElementRef;
+
+  async ngAfterViewInit() {
     const settings = {
       colorTheme: "light",
       dateRange: "12m",
@@ -131,11 +83,69 @@ export class OverviewComponent implements AfterViewInit {
       ]
     };
 
-    this.drawStockChart(this.containerDiv1.nativeElement, settings);
+    // this.drawStockChart(this.containerDiv1.nativeElement, settings);
     this.drawStockChart(this.containerDiv2.nativeElement, settings);
     this.drawStockChart(this.containerDiv3.nativeElement, settings);
+
+    this.chartData = [];
+    this.mI = await this.parseService.getMI();
+    if (this.mI && this.mI.length) {
+      this.mI = this.mI.map(value => ({
+        x: `${moment().format("YYYY-MM-DD")}T${value.get("tradingTime")}+07:00`,
+        y: value.get("totalValueTraded")
+      }));
+    }
+    console.log(this.mI);
+    var options = {
+      type: "line",
+      data: {
+        datasets: [
+          {
+            borderColor: "green",
+            data: this.mI,
+            fill: false,
+            radius: 0
+          }
+        ]
+      },
+      options: {
+        legend: {
+          display: false
+        },
+        scales: {
+          xAxes: [
+            {
+              type: "time"
+            }
+          ]
+        }
+      }
+    };
+    this.chart = this.drawChart(this.myChart.nativeElement, options);
+    Highcharts.stockChart("container", {
+      rangeSelector: {
+        selected: 1
+      },
+
+      title: {
+        text: "AAPL Stock Price"
+      },
+
+      series: [
+        {
+          name: "AAPL",
+          data: data,
+          tooltip: {
+            valueDecimals: 2
+          }
+        }
+      ]
+    });
   }
 
+  constructor(private parseService: ParseService) {}
+
+  async ngOnInit() {}
   drawChart(ctx, options) {
     return new Chart(ctx, options);
   }
@@ -149,4 +159,66 @@ export class OverviewComponent implements AfterViewInit {
     script.innerHTML = JSON.stringify(options);
     ctx.appendChild(script);
   }
+  // chartData: Array<Point> = [];
+  // ngAfterViewInit(): void {
+  //   this.chartData = [];
+  //   var options = {
+  //     type: "line",
+  //     data: {
+  //       datasets: [
+  //         {
+  //           borderColor: "green",
+  //           data: [
+  //             {
+  //               x: moment(),
+  //               y: 500000
+  //             },
+  //             {
+  //               x: moment()
+  //                 .clone()
+  //                 .add(1, "minute"),
+  //               y: 2000000
+  //             },
+  //             {
+  //               x: moment()
+  //                 .clone()
+  //                 .add(2, "minute"),
+  //               y: 1500000
+  //             },
+  //             {
+  //               x: moment()
+  //                 .clone()
+  //                 .add(3, "minute"),
+  //               y: 1000000
+  //             }
+  //           ],
+  //           fill: false,
+  //           radius: 0
+  //         }
+  //       ]
+  //     },
+  //     options: {
+  //       legend: {
+  //         display: false
+  //       },
+  //       scales: {
+  //         xAxes: [
+  //           {
+  //             type: "time",
+  //             time: {
+  //               displayFormats: {
+  //                 hour: "hA"
+  //               }
+  //             }
+  //           }
+  //         ]
+  //       }
+  //     }
+  //   };
+
+  //   this.chart = this.drawChart(this.myChart.nativeElement, options);
+  // }
+  // drawChart(ctx, options) {
+  //   return new Chart(ctx, options);
+  // }
 }

@@ -66,6 +66,7 @@ export class HsxComponent implements AfterViewInit, OnInit, DoCheck {
   }
   chartData: Array<Point> = [];
   chart: any;
+
   tradingView: any;
   constructor() {}
 
@@ -156,7 +157,8 @@ export class HsxComponent implements AfterViewInit, OnInit, DoCheck {
     // this.drawStockChart(this.containerDiv.nativeElement, settings);
     // this.drawStockChart(this.containerDiv1.nativeElement, settings);
     // this.drawStockChart(this.containerDiv2.nativeElement, settings);
-    this.drawChart(this.mybarChart.nativeElement, {
+    // this.drawChart(this.mybarChart.nativeElement, {
+    var optionsBarChart = {
       type: "bar",
       data: {
         labels: ["Tăng", "Giảm", "Không đổi"],
@@ -185,25 +187,59 @@ export class HsxComponent implements AfterViewInit, OnInit, DoCheck {
           ]
         }
       }
-    });
+    };
+    this.chart = this.drawChart(this.mybarChart.nativeElement, optionsBarChart);
+    this.chart = this.drawChart(
+      this.mybarChart1.nativeElement,
+      optionsBarChart
+    );
+    this.chart = this.drawChart(
+      this.mybarChart2.nativeElement,
+      optionsBarChart
+    );
   }
   drawChart(ctx, options) {
     return new Chart(ctx, options);
   }
 
   ngDoCheck() {
+    // var optionsSparkLine = {}
     this.griddata.forEach((data: any) => {
-      const ele = document.querySelector("#spkline" + data.EmployeeID);
+      const ele = document.querySelector("#spkline_" + data.EmployeeID);
+      const ele2 = document.querySelector("#spkline2_" + data.EmployeeID);
+      const ele3 = document.querySelector("#spkline3_" + data.EmployeeID);
       if (ele && !ele.innerHTML) {
         let line: Sparkline = new Sparkline({
           height: "20px",
           width: "100%",
-          lineWidth: 2,
+          lineWidth: 1,
           valueType: "Numeric",
           fill: "green",
           dataSource: data.SparkLineData
         });
-        line.appendTo("#spkline" + data.EmployeeID);
+        line.appendTo("#spkline_" + data.EmployeeID);
+      }
+      if (ele2 && !ele2.innerHTML) {
+        let line: Sparkline = new Sparkline({
+          height: "20px",
+          width: "100%",
+          lineWidth: 1,
+          valueType: "Numeric",
+          fill: "green",
+          dataSource: data.SparkLineData
+        });
+        line.appendTo("#spkline2_" + data.EmployeeID);
+      }
+      if (ele3 && !ele3.innerHTML) {
+        let line: Sparkline = new Sparkline({
+          height: "20px",
+          width: "100%",
+          lineWidth: 1,
+          valueType: "Numeric",
+          fill: "green",
+          dataSource: data.SparkLineData
+        });
+        line.appendTo("#spkline3_" + data.EmployeeID);
       }
     });
   }
