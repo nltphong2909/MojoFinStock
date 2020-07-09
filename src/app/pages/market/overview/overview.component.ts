@@ -11,13 +11,11 @@ import * as moment from "moment";
 import { timeout } from "rxjs/operators";
 import { ParseService } from "../../../parse.service";
 import { data } from "./data";
+import { zoomComplete, onZooming } from "@syncfusion/ej2-charts";
+import * as CanvasJS from "canvasjs/dist/canvasjs.js";
 
-declare const TradingView: any;
-declare const Highcharts: any;
+declare const zingchart: any;
 
-/**
- * Sample for default stockchart
- */
 @Component({
   selector: "stocke-chart",
   templateUrl: "./overview.component.html",
@@ -25,84 +23,68 @@ declare const Highcharts: any;
   encapsulation: ViewEncapsulation.None
 })
 export class OverviewComponent implements AfterViewInit {
-  chartData: Array<Point> = [];
   chart: any;
-  // chart2: any;
-  // chart3: any;
   tradingView: any;
   mI = [];
+  vnData = [];
+  hnxData = [];
+  upData = [];
+  klGiaodichVnx: any;
+  gtGiaodichVnx: any;
+  klGiaodichHnx: any;
+  gtGiaodichHnx: any;
+  klGiaodichUp: any;
+  gtGiaodichUp: any;
 
-  @ViewChild("container1", { static: false }) containerDiv1: ElementRef;
-  @ViewChild("container2", { static: false }) containerDiv2: ElementRef;
-  @ViewChild("container3", { static: false }) containerDiv3: ElementRef;
+  @ViewChild("stockChartVN", { static: false }) stockChartVN: ElementRef;
+  @ViewChild("stockChartHN", { static: false }) stockChartHN: ElementRef;
+  @ViewChild("stockChartUP", { static: false }) stockChartUP: ElementRef;
 
-  @ViewChild("myChart", { static: false }) myChart: ElementRef;
+  constructor(private parseService: ParseService) {}
 
   async ngAfterViewInit() {
-    const settings = {
-      colorTheme: "light",
-      dateRange: "12m",
-      showChart: true,
-      locale: "vi_VN",
-      largeChartUrl: "",
-      isTransparent: false,
-      width: "100%",
-      height: "800",
-      plotLineColorGrowing: "rgba(56, 118, 29, 1)",
-      plotLineColorFalling: "rgba(56, 118, 29, 1)",
-      gridLineColor: "rgba(152, 152, 152, 1)",
-      scaleFontColor: "rgba(0, 0, 0, 1)",
-      belowLineFillColorGrowing: "rgba(255, 255, 255, 0.12)",
-      belowLineFillColorFalling: "rgba(255, 255, 255, 0.12)",
-      symbolActiveColor: "rgba(152, 152, 152, 0.12)",
-      tabs: [
-        {
-          title: "Ngoại hối",
-          symbols: [
-            {
-              s: "FX:EURUSD"
-            },
-            {
-              s: "FX:GBPUSD"
-            },
-            {
-              s: "FX:USDJPY"
-            },
-            {
-              s: "FX:USDCHF"
-            },
-            {
-              s: "FX:AUDUSD"
-            },
-            {
-              s: "FX:USDCAD"
-            }
-          ],
-          originalTitle: "Forex"
-        }
-      ]
-    };
-
-    // this.drawStockChart(this.containerDiv1.nativeElement, settings);
-    this.drawStockChart(this.containerDiv2.nativeElement, settings);
-    this.drawStockChart(this.containerDiv3.nativeElement, settings);
-
-    this.chartData = [];
-    this.mI = await this.parseService.getMI();
-    if (this.mI && this.mI.length) {
-      this.mI = this.mI.map(value => ({
-        x: `${moment().format("YYYY-MM-DD")}T${value.get("tradingTime")}+07:00`,
-        y: value.get("totalValueTraded")
-      }));
+    try {
+      this.mI = await this.parseService.getMI();
+    } catch (ex) {
+      console.log(ex);
     }
-    console.log(this.mI);
-    var options = {
+    if (this.mI && this.mI.length) {
+      // this.vnData = this.getChartData(this.mI, "10");
+      this.klGiaodichVnx = this.getNewestData(this.mI, "10");
+      this.gtGiaodichVnx = this.getNewestData(this.mI, "10");
+      this.klGiaodichHnx = this.getNewestData(this.mI, "02");
+      this.gtGiaodichHnx = this.getNewestData(this.mI, "02");
+      this.klGiaodichUp = this.getNewestData(this.mI, "03");
+      this.gtGiaodichUp = this.getNewestData(this.mI, "03");
+
+      // this.hnxData = this.getChartData(this.mI, "02");
+      // this.upData = this.getChartData(this.mI, "03");
+    }
+    // this.renderChart("myChartUP", this.upData);
+    // this.renderChart("myChartHNX", this.hnxData);
+    // this.renderChart("myChartVN", this.vnData);
+
+    //---------------------VN_IDX--------------
+    let stockChartVN = {
       type: "line",
       data: {
         datasets: [
           {
             borderColor: "green",
-            data: this.mI,
+            data: this.mI
+              .filter(fCode => {
+                return fCode.get("floorCode") === "10";
+              })
+              .map(item => {
+                return {
+                  x:
+                    moment().format("YYYY-MM-DD") +
+                    "T" +
+                    item.get("tradingTime") +
+                    "+07:00",
+                  y: item.get("marketIndex")
+                };
+              }),
             fill: false,
             radius: 0
           }
@@ -115,110 +97,204 @@ export class OverviewComponent implements AfterViewInit {
         scales: {
           xAxes: [
             {
-              type: "time"
+              type: "time",
+              time: {
+                displayFormats: {
+                  hour: "hA"
+                }
+              }
             }
           ]
         }
       }
     };
-    this.chart = this.drawChart(this.myChart.nativeElement, options);
-    Highcharts.stockChart("container", {
-      rangeSelector: {
-        selected: 1
-      },
 
-      title: {
-        text: "AAPL Stock Price"
-      },
+    this.drawChart(this.stockChartVN.nativeElement, stockChartVN);
 
-      series: [
-        {
-          name: "AAPL",
-          data: data,
-          tooltip: {
-            valueDecimals: 2
+    //---------------------HN_IDX--------------
+    let stockChartHN = {
+      type: "line",
+      data: {
+        datasets: [
+          {
+            borderColor: "green",
+            data: this.mI
+              .filter(fCode => {
+                return fCode.get("floorCode") === "02";
+              })
+              .map(item => {
+                return {
+                  x:
+                    moment().format("YYYY-MM-DD") +
+                    "T" +
+                    item.get("tradingTime") +
+                    "+07:00",
+                  y: item.get("marketIndex")
+                };
+              }),
+            fill: false,
+            radius: 0
           }
+        ]
+      },
+      options: {
+        legend: {
+          display: false
+        },
+        scales: {
+          xAxes: [
+            {
+              type: "time",
+              time: {
+                displayFormats: {
+                  hour: "hA"
+                }
+              }
+            }
+          ]
         }
-      ]
-    });
+      }
+    };
+
+    this.drawChart(this.stockChartHN.nativeElement, stockChartHN);
+
+    //---------------------UP_IDX--------------
+
+    let stockChartUP = {
+      type: "line",
+      data: {
+        datasets: [
+          {
+            borderColor: "green",
+            data: this.mI
+              .filter(fCode => {
+                return fCode.get("floorCode") === "03";
+              })
+              .map(item => {
+                return {
+                  x:
+                    moment().format("YYYY-MM-DD") +
+                    "T" +
+                    item.get("tradingTime") +
+                    "+07:00",
+                  y: item.get("marketIndex")
+                };
+              }),
+            fill: false,
+            radius: 0
+          }
+        ]
+      },
+      options: {
+        legend: {
+          display: false
+        },
+        scales: {
+          xAxes: [
+            {
+              type: "time",
+              time: {
+                displayFormats: {
+                  hour: "hA"
+                }
+              }
+            }
+          ]
+        }
+      }
+    };
+
+    this.drawChart(this.stockChartUP.nativeElement, stockChartUP);
   }
 
-  constructor(private parseService: ParseService) {}
+  // getChartData(data, floorCode) {
+  //   return data
+  //     .filter(res => {
+  //       return res.get("floorCode") === floorCode;
+  //     })
+  //     .map(value => {
+  //       return [
+  //         parseInt(
+  //           moment(
+  //             `${moment().format("YYYY-MM-DD")}T${value.get(
+  //               "tradingTime"
+  //             )}+07:00`
+  //           ).format("x")
+  //         ),
+  //         parseFloat(value.get("marketIndex"))
+  //       ];
+  //     });
+  // }
 
   async ngOnInit() {}
-  drawChart(ctx, options) {
-    return new Chart(ctx, options);
+
+  getNewestData(data: Array<any>, floorCode: string) {
+    let result = data.filter(item => {
+      return item.get("floorCode") === floorCode;
+    });
+    if (result && result.length) {
+      return result[result.length - 1];
+    } else {
+      return "";
+    }
   }
 
-  drawStockChart(ctx: HTMLElement, options: any) {
-    const script = document.createElement("script");
-    script.src =
-      "https://s3.tradingview.com/external-embedding/embed-widget-market-overview.js";
-    script.async = true;
-    script.id = "tradingview_mini_chart";
-    script.innerHTML = JSON.stringify(options);
-    ctx.appendChild(script);
-  }
-  // chartData: Array<Point> = [];
-  // ngAfterViewInit(): void {
-  //   this.chartData = [];
-  //   var options = {
+  // renderChart(id, values) {
+  //   var config = {
   //     type: "line",
-  //     data: {
-  //       datasets: [
-  //         {
-  //           borderColor: "green",
-  //           data: [
-  //             {
-  //               x: moment(),
-  //               y: 500000
-  //             },
-  //             {
-  //               x: moment()
-  //                 .clone()
-  //                 .add(1, "minute"),
-  //               y: 2000000
-  //             },
-  //             {
-  //               x: moment()
-  //                 .clone()
-  //                 .add(2, "minute"),
-  //               y: 1500000
-  //             },
-  //             {
-  //               x: moment()
-  //                 .clone()
-  //                 .add(3, "minute"),
-  //               y: 1000000
-  //             }
-  //           ],
-  //           fill: false,
-  //           radius: 0
-  //         }
-  //       ]
-  //     },
-  //     options: {
-  //       legend: {
-  //         display: false
+  //     scaleX: {
+  //       transform: {
+  //         type: "date",
+  //         all: "%h:%i %A"
   //       },
-  //       scales: {
-  //         xAxes: [
+  //       plot: {
+  //         marker: [
   //           {
-  //             type: "time",
-  //             time: {
-  //               displayFormats: {
-  //                 hour: "hA"
-  //               }
-  //             }
+  //             type: "line"
+  //           },
+  //           {
+  //             type: "area",
+  //             range: [
+  //               moment(
+  //                 `${moment().format("YYYY-MM-DD")}T12:00:00+07:00`
+  //               ).format("x"),
+  //               moment(
+  //                 `${moment().format("YYYY-MM-DD")}T15:00:00+07:00`
+  //               ).format("x")
+  //             ]
   //           }
   //         ]
   //       }
-  //     }
+  //     },
+  //     scaleY: {
+  //       zooming: true,
+  //       // values: "50:60:2",
+  //       guide: {
+  //         "line-style": "dotted"
+  //       }
+  //     },
+  //     series: [
+  //       {
+  //         values: values
+  //       }
+  //     ]
   //   };
-
-  //   this.chart = this.drawChart(this.myChart.nativeElement, options);
+  //   zingchart.render({
+  //     id: id,
+  //     data: config,
+  //     height: 400,
+  //     width: "100%"
+  //   });
+  //   stockChart.render({
+  //     id: id,
+  //     data: stockChart,
+  //     height: 400,
+  //     width: "100%"
+  //   });
   // }
-  // drawChart(ctx, options) {
-  //   return new Chart(ctx, options);
   // }
+  drawChart(ctx, options) {
+    return new Chart(ctx, options);
+  }
+  //-------------------------------------------------------------------------------------------
 }

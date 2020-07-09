@@ -7,7 +7,6 @@ import { NbCardModule, NbListModule } from "@nebular/theme";
 import { ChartModule } from "angular2-chartjs";
 import { NgxChartsModule } from "@swimlane/ngx-charts";
 import { AgGridModule } from "ag-grid-angular";
-
 @NgModule({
   declarations: [NewsComponent],
 

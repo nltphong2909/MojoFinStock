@@ -58,7 +58,7 @@ export class ParseService {
     let MI = Parse.Object.extend("MI");
     let query = new Parse.Query(MI);
     query.ascending("tradingTime");
-    query.limit(100000);
+    query.limit(1000);
     return await query.find();
   }
   currentUser() {

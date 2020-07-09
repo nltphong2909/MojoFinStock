@@ -5,27 +5,94 @@
         <a href="" style="text-decoration: none;">VN-IDX</a>
       </nb-card-header>
       <nb-card-body>
-        <canvas #myChart id="myChart" width="auto" height="auto"></canvas>
-        <div id="container"></div>
-        <!-- <div class="tradingview-widget-container1" #container1>
-          <div class="tradingview-widget-container1__widget"></div>
-          <div class="tradingview-widget-copyright"></div> -->
+        <canvas #stockChartVN id="stockChartVN" width="300" height="200"></canvas>
+        <!-- <div id="container"></div> -->
+        <!-- <div id='myChartVN'></div> -->
+        <div class="divtable">
+          <table class="table">
+            <tr>
+              <th>KL Giao dịch</th>
+              <th>Dự kiến</th>
+            </tr>
+            <tr>
+              <td>{{klGiaodichVnx && klGiaodichVnx.get("totalShareTraded")}}</td>
+              <td>...</td>
+            </tr>
+            <tr>
+              <th>GT Giao dịch</th>
+              <th>Dự kiến</th>
+            </tr>
+            <tr>
+              <td>{{gtGiaodichVnx && gtGiaodichVnx.get("totalValueTraded")}}</td>
+              <td>...</td>
+            </tr>
+            <tr>
+              <th>KL NN Mua</th>
+              <th>KL NN Bán</th>
+            </tr>
+            <tr>
+              <td>...</td>
+              <td>...</td>
+            </tr>
+            <tr>
+              <th>GT NN Mua</th>
+              <th>GT NN Bán</th>
+            </tr>
+            <tr>
+              <td>...</td>
+              <td>...</td>
+            </tr>
+          </table>
+        </div>
       </nb-card-body>
     </nb-card>
   </div>
 
 
 
-  <div class="card-col">
+  <div class=" card-col">
     <nb-card size="big">
       <nb-card-header>
         <a href="" style="text-decoration: none;">HN-IDX</a>
       </nb-card-header>
       <nb-card-body>
-        <!-- <canvas #myChart2 id="myChart2" width="auto" height="auto"></canvas> -->
-        <div class="tradingview-widget-container2" #container2>
-          <div class="tradingview-widget-container2__widget"></div>
-          <div class="tradingview-widget-copyright"></div>
+        <canvas #stockChartHN id="stockChartHN" width="300" height="200"></canvas>
+        <!-- <div id='myChartHNX'></div> -->
+        <div class="divtable">
+          <table class="table">
+            <tr>
+              <th>KL Giao dịch</th>
+              <th>Dự kiến</th>
+            </tr>
+            <tr>
+              <td>{{klGiaodichHnx && klGiaodichHnx.get("totalShareTraded")}}</td>
+              <td>...</td>
+            </tr>
+            <tr>
+              <th>GT Giao dịch</th>
+              <th>Dự kiến</th>
+            </tr>
+            <tr>
+              <td>{{gtGiaodichHnx && gtGiaodichHnx.get("totalValueTraded")}}</td>
+              <td>...</td>
+            </tr>
+            <tr>
+              <th>KL NN Mua</th>
+              <th>KL NN Bán</th>
+            </tr>
+            <tr>
+              <td>...</td>
+              <td>...</td>
+            </tr>
+            <tr>
+              <th>GT NN Mua</th>
+              <th>GT NN Bán</th>
+            </tr>
+            <tr>
+              <td>...</td>
+              <td>...</td>
+            </tr>
+          </table>
         </div>
       </nb-card-body>
     </nb-card>
@@ -37,10 +104,43 @@
         <a href="" style="text-decoration: none;">UP-IDX</a>
       </nb-card-header>
       <nb-card-body>
-        <!-- <canvas #myChart3 id="myChart3" width="auto" height="auto"></canvas> -->
-        <div class="tradingview-widget-container3" #container3>
-          <div class="tradingview-widget-container3__widget"></div>
-          <div class="tradingview-widget-copyright"></div>
+        <canvas #stockChartUP id="stockChartUP" width="300" height="200"></canvas>
+        <!-- <div id='myChartUP'></div> -->
+        <div class="divtable">
+          <table class="table">
+            <tr>
+              <th>KL Giao dịch</th>
+              <th>Dự kiến</th>
+            </tr>
+            <tr>
+              <td>{{klGiaodichUp && klGiaodichUp.get("totalShareTraded")}}</td>
+              <td>...</td>
+            </tr>
+            <tr>
+              <th>GT Giao dịch</th>
+              <th>Dự kiến</th>
+            </tr>
+            <tr>
+              <td>{{gtGiaodichUp && gtGiaodichUp.get("totalValueTraded")}}</td>
+              <td>...</td>
+            </tr>
+            <tr>
+              <th>KL NN Mua</th>
+              <th>KL NN Bán</th>
+            </tr>
+            <tr>
+              <td>...</td>
+              <td>...</td>
+            </tr>
+            <tr>
+              <th>GT NN Mua</th>
+              <th>GT NN Bán</th>
+            </tr>
+            <tr>
+              <td>...</td>
+              <td>...</td>
+            </tr>
+          </table>
         </div>
       </nb-card-body>
     </nb-card>
