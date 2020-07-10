@@ -1,0 +1,11 @@
+version: '3'
+services:
+    angular_app:
+        container_name: angular_app
+        restart: always
+        build:
+            context: .
+        image: angular-app
+        command: angular-http-server -p 4200
+        ports:
+            - 4200:4200
